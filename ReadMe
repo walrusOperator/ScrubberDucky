@@ -1,0 +1,26 @@
+Title: Toppan Merrill | Scrubber Ducky
+Date: 06/28/2024
+Author: Thomas Mullins; Toppan Merrill, XBRL Product Support
+
+Why are we here: The intention of this program is to provide a simple tool to remove and replace non-ASCII charters for
+long blocks of text. This will include non-breaking spaces and other formatting characters that tend to come with
+copy/paste from PDFs and other sources. The English Pound and Euro symbols are replaced with the ISO counterparts of GBP
+and Eur, respectively. Other currency characters such as the Yen symbol have not been addressed as the program
+does not recognize context between ISOs, such as Japanese Yen, JPY, and Chinese, Yen CNY.
+
+This program makes use of the unidecode library (https://pypi.org/project/Unidecode/) to do much of the heavy lifting.
+This library is intended for english language use only with limited use for non-latin based alphabet characters.
+Please see the above pypi page for further details.
+
+The program overall is intended to be a single file executable that does not require installation for simple
+distribution.
+
+Command for pyinstaller:
+pyinstaller.exe --onefile --noconsole --icon=rubberduck.ico --name ScrubberDucky --add-data="rubberduck.ico;." ScrubGui.py
+
+Dependencies:
+Python 3.12.2
+unidecode (Python version <3 not supported)
+pyperclip
+tkinter
+os
