@@ -6,7 +6,7 @@ Why are we here: The intention of this program is to provide a simple tool to re
 long blocks of text. This will include non-breaking spaces and other formatting characters that tend to come with
 copy/paste from PDFs and other sources. The English Pound and Euro symbols are replaced with the ISO counterparts of GBP
 and Eur, respectively. Other currency characters such as the Yen symbol have not been addressed as the program
-does not recognize context between ISOs, such as Japanese Yen, JPY, and Chinese, Yen CNY.
+does not recognize context between ISOs, such as Japanese Yen, JPY, and Chinese Yen, CNY.
 
 This program makes use of the unidecode library (https://pypi.org/project/Unidecode/) to do much of the heavy lifting.
 This library is intended for english language use only with limited use for non-latin based alphabet characters.
