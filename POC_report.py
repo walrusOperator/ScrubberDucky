@@ -2,6 +2,8 @@ from redlines import Redlines
 import webbrowser
 import os
 
+# This file only exists for the purposes of testing the redlines library
+
 # Define your strings
 string1 = "This is the original string."
 string2 = "This is the modified string."
