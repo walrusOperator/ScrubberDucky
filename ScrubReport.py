@@ -6,7 +6,7 @@ import os
 from redlines import Redlines
 import webbrowser
 
-# The following lines are required to use saved data from the ico image for use in the window
+
 basedir = os.path.dirname(__file__)
 try:
     from ctypes import windll  # Only exists on Windows
@@ -24,8 +24,8 @@ def scrub_text():
         if origin_text and origin_text != placeholder:
             # Replace used here to replace any instances of £ with GBP before text is run through unidecode
             fixed_text = text_scrubber(origin_text.replace('£', 'GBP'))
-            redline = Redlines(origin_text, fixed_text)
-            # save_temp_html()
+            redlines = Redlines(origin_text, fixed_text)
+            save_temp_html(redlines)
             text_area.delete("1.0", tk.END)
             text_area.insert("1.0", fixed_text)
             message_label.config(text="Text has been scrubbed and replaced in the text area", fg="green")
@@ -34,15 +34,43 @@ def scrub_text():
     except Exception as e:
         message_label.config(text=f"An error occurred: {e}", fg="red")
 
+
 def save_temp_html(redline):
-    html_diff = redline.output_markdown
-    # Save the HTML to a file
-    html_file = 'diff_output.html'
-    with open(html_file, 'w') as file:
-        file.write(html_diff)
+    try:
+        html_diff = redline.output_markdown  # Retrieve the Markdown output from the redline object
+
+        # HTML template with CSS to preserve whitespace
+        html_content = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                pre {{
+                    white-space: pre-wrap; /* CSS to preserve whitespace */
+                    font-family: monospace; /* Use a monospace font for better formatting */
+                }}
+            </style>
+            <title>Text Difference Report</title>
+        </head>
+        <body>
+            <pre>{html_diff}</pre>
+        </body>
+        </html>
+        """
+
+        html_file = 'diff_output.html'  # Define the filename
+        with open(html_file, 'w', encoding='utf-8') as file:  # Open the file in write mode with UTF-8 encoding
+            file.write(html_content)  # Write the HTML content to the file
+
+        message_label.config(text="HTML file has been saved successfully", fg="green")
+    except Exception as e:
+        message_label.config(text=f"Error saving HTML file: {e}", fg="red")
+
 
 def view_report():
-    webbrowser.open(f'file://{os.path.realpath("diff_output.html")}')
+    webbrowser.open(f'file://{os.path.realpath('diff_output.html')}')
 
 def clear_text_area():
     text_area.delete("1.0", tk.END)
@@ -70,6 +98,7 @@ def import_from_clipboard():
 def save_to_clipboard():
     try:
         pyperclip.copy(text_area.get("1.0", tk.END).strip())
+        message_label.config(text="Text has been copied to clipboard", fg="green")
     except pyperclip.PyperclipException as e:
         message_label.config(text=f"Error saving to clipboard: {e}", fg="red")
     except Exception as e:
