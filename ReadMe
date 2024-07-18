@@ -12,15 +12,24 @@ This program makes use of the unidecode library (https://pypi.org/project/Unidec
 This library is intended for english language use only with limited use for non-latin based alphabet characters.
 Please see the above pypi page for further details.
 
+The program will now also support the ability to compare input/output text through the use of the Redlines library
+https://pypi.org/project/redlines/
+
 The program overall is intended to be a single file executable that does not require installation for simple
 distribution.
 
+Redlines is published as OSI Approved :: MIT License open source
+UniDecode is OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+
 Command for pyinstaller:
-pyinstaller.exe --onefile --noconsole --icon=rubberduck.ico --name ScrubberDucky --add-data="rubberduck.ico;." ScrubGui.py
+pyinstaller.exe --onefile --noconsole --icon=rubberduck.ico --name ScrubberDuckyReport --add-data="rubberduck.ico;." --add-data="diff_output.html;." ScrubReport.py
 
 Dependencies:
-Python 3.12.2
-unidecode (Python version <3 not supported)
-pyperclip
-tkinter
-os
+import tkinter as tk
+from tkinter import scrolledtext
+from unidecode import unidecode
+import pyperclip
+import os
+from redlines import Redlines
+import webbrowser
+import sys
