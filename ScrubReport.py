@@ -5,12 +5,21 @@ import pyperclip
 import os
 from redlines import Redlines
 import webbrowser
+import sys
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 basedir = os.path.dirname(__file__)
 try:
     from ctypes import windll  # Only exists on Windows
-
     myappid = "mycompany.myproduct.subproduct.version"
     windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 except ImportError:
@@ -33,7 +42,6 @@ def scrub_text():
             message_label.config(text="Please enter some text to scrub", fg="red")
     except Exception as e:
         message_label.config(text=f"An error occurred: {e}", fg="red")
-
 
 def save_temp_html(redline):
     try:
@@ -60,17 +68,17 @@ def save_temp_html(redline):
         </html>
         """
 
-        html_file = 'diff_output.html'  # Define the filename
-        with open(html_file, 'w', encoding='utf-8') as file:  # Open the file in write mode with UTF-8 encoding
+        html_file = resource_path('diff_output.html')  # Define the filename using resource_path
+        with open(html_file, 'w', encoding='utf-8') as file:  # Open the file using UTF-8 encoding
             file.write(html_content)  # Write the HTML content to the file
 
         message_label.config(text="HTML file has been saved successfully", fg="green")
     except Exception as e:
         message_label.config(text=f"Error saving HTML file: {e}", fg="red")
 
-
 def view_report():
-    webbrowser.open(f'file://{os.path.realpath('diff_output.html')}')
+    html_file = resource_path('diff_output.html')  # Define the filename using resource_path
+    webbrowser.open(f'file://{html_file}')
 
 def clear_text_area():
     text_area.delete("1.0", tk.END)
@@ -83,17 +91,6 @@ def text_scrubber(text):
     except Exception as e:
         message_label.config(text=f"Error in text_scrubber: {e}", fg="red")
         return text
-
-# Method not currently implemented
-def import_from_clipboard():
-    try:
-        return pyperclip.paste()
-    except pyperclip.PyperclipException as e:
-        message_label.config(text=f"Error importing from clipboard: {e}", fg="red")
-        return ""
-    except Exception as e:
-        message_label.config(text=f"Unexpected error importing from clipboard: {e}", fg="red")
-        return ""
 
 def save_to_clipboard():
     try:
@@ -130,7 +127,8 @@ root.geometry("500x350")
 root.resizable(False, False)  # Disable resizing of the window
 
 try:
-    root.iconbitmap(os.path.join(basedir, "rubberduck.ico"))
+    icon_path = resource_path('rubberduck.ico')  # Define the icon path using resource_path
+    root.iconbitmap(icon_path)  # Set the icon using the resource_path result
 except Exception as e:
     print(f"An error occurred setting the icon: {e}")
 
