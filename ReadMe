@@ -1,6 +1,6 @@
-Title: Toppan Merrill | Scrubber Ducky
+Title: Scrubber Ducky
 Date: 06/28/2024
-Author: Thomas Mullins; Toppan Merrill, XBRL Product Support
+Author: Thomas Mullins
 
 Why are we here: The intention of this program is to provide a simple tool to remove and replace non-ASCII charters for
 long blocks of text. This will include non-breaking spaces and other formatting characters that tend to come with
@@ -24,7 +24,7 @@ UniDecode is OSI Approved :: GNU General Public License v2 or later (GPLv2+)
 Command for pyinstaller:
 pyinstaller.exe --onefile --noconsole --icon=rubberduck.ico --name ScrubberDuckyReport --add-data="rubberduck.ico;." --add-data="diff_output.html;." ScrubReport.py
 
-Dependencies:
+Dependencies/required libraries:
 import tkinter as tk
 from tkinter import scrolledtext
 from unidecode import unidecode
